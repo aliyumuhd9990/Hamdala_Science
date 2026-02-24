@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   {% load static %}
   <head>
@@ -13,24 +13,44 @@
 
     <!-- Google Web Fonts -->
     <link rel="preconnect" href="https://fonts.gstatic.com" />
+
+    <!-- Custom fonts for this template-->
+    <link href="{% static 'admin/vendor/fontawesome-free/css/all.min.css' %}" rel="stylesheet" type="text/css">
+
     <link
-      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
-      rel="stylesheet"
-    />
+        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+        rel="stylesheet">
+
+    <!-- Custom styles for this template-->
+    <link href="{% static 'admin/css/sb-admin-2.min.css' %}" rel="stylesheet">
+
+
 
     <!-- Font Awesome -->
-     
 
     <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet" />
     <link href="https://bootswatch.com/cosmo/" rel="stylesheet" />
     <!-- Customized Bootstrap Stylesheet -->
     <link href="{% static 'css/bootstrap.css' %}" rel="stylesheet" />
-    </head>
-    <body>     
-      <nav class="navbar navbar-expand-lg bg-primary fixed-top" data-bs-theme="dark">
-        <div class="container-fluid">
-          <a class="navbar-brand" href="#">HSC</a>
-          <button
+  </head>
+  <body>
+    <!-- Preloader -->
+    <div
+      id="preloader"
+      class="position-fixed top-0 start-0 w-100 h-100 bg-white d-flex justify-content-center align-items-center"
+      style="z-index: 1050"
+    >
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+    </div>
+    <nav
+      class="navbar navbar-expand-lg bg-primary fixed-top"
+      data-bs-theme="dark"
+    >
+      <div class="container">
+        <a class="navbar-brand" href="#">HSC</a>
+        <button
           class="navbar-toggler"
           type="button"
           data-bs-toggle="collapse"
@@ -38,11 +58,47 @@
           aria-controls="navbarColor01"
           aria-expanded="false"
           aria-label="Toggle navigation"
-          >
+        >
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarColor01">
-          <ul class="navbar-nav me-auto">
+          <ul class="navbar-nav ml-auto">
+            {% if user.is_authenticated %}
+            <!-- Nav Item - User Information -->
+                        <li class="nav-item dropdown no-arrow ms-5">
+                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span class="mr-2 d-none d-lg-inline text-white-600 small">Mr. {{user.first_name}}</span>
+                                
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="white" class="bi bi-person-circle mx-auto" viewBox="0 0 16 16">
+  <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0"/>
+  <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1"/></svg>
+                            </a>
+                            <!-- Dropdown - User Information -->
+                            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                                aria-labelledby="userDropdown">
+                                <a class="dropdown-item" href="{% url 'account' %}">
+                                    <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Profile
+                                </a>
+                                <a class="dropdown-item" href="#">
+                                    <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Settings
+                                </a>
+                                <a class="dropdown-item" href="#">
+                                    <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Activity Log
+                                </a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="{% url 'logout' %}" >
+                                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Logout
+                                </a>
+                            </div>
+                        </li>
+
+
+            {% else %}
             <li class="nav-item">
               <a class="nav-link active" href="#home"
                 >Home
@@ -75,27 +131,57 @@
                 <a class="dropdown-item" href="#">Separated link</a>
               </div>
             </li>
+            
+            
           </ul>
           <form class="d-flex">
             <input
-            class="form-control me-sm-2"
-            type="search"
+              class="form-control me-sm-2"
+              type="search"
               placeholder="Search"
             />
             <button class="btn btn-secondary my-2 my-sm-0 ms-2" type="submit">
               Search
             </button>
           </form>
+          {% endif %}
         </div>
       </div>
     </nav>
-    
-    {% block content %}
-      
-    {% endblock content %}
-      
+
+    {% block content %} {% endblock content %}
+    <!-- JavaScript: force preloader for 3 seconds -->
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        setTimeout(function () {
+          const preloader = document.getElementById("preloader");
+          if (preloader) {
+            preloader.remove(); // Removes the preloader after 3s
+          }
+        }, 2000); // 2000 milliseconds = 2 seconds
+      });
+    </script>
   </body>
-  
-  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.min.js" integrity="sha384-G/EV+4j2dNv+tEPo3++6LCgdCROaejBqfUeNjuKAiuXbjrxilcCdDz6ZAVfHWe1Y" crossorigin="anonymous"></script>
+
+  <script
+    src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+    integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+    crossorigin="anonymous"
+  ></script>
+  <script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.min.js"
+    integrity="sha384-G/EV+4j2dNv+tEPo3++6LCgdCROaejBqfUeNjuKAiuXbjrxilcCdDz6ZAVfHWe1Y"
+    crossorigin="anonymous"
+  ></script>
+
+   <!-- Bootstrap core JavaScript-->
+    <script src="{% static 'admin/vendor/jquery/jquery.min.js' %}"></script>
+    <script src="{% static 'admin/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+
+    <!-- Core plugin JavaScript-->
+    <script src="{% static 'admin/vendor/jquery-easing/jquery.easing.min.js' %}"></script>
+
+    <!-- Custom scripts for all pages-->
+    <script src="{% static 'admin/js/sb-admin-2.min.js' %}"></script>
+
 </html>

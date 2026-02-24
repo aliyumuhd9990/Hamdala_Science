@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+<head>
+    <meta charset="utf-8">
+    <title>
+    {% block title %}
+        
+    {% endblock title %}
+        </title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="Free HTML Templates" name="keywords">
+    <meta content="Free HTML Templates" name="description">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">    
+</head>
+  <body>
+      <!-- Preloader -->
+<div id="preloader" class="position-fixed top-0 start-0 w-100 h-100 bg-white d-flex justify-content-center align-items-center" style="z-index: 1050;">
+  <div class="spinner-border text-primary" role="status">
+    <span class="visually-hidden">Loading...</span>
+  </div>
+</div>
+
+    <main>
+          <section class="sign-in-form pt-5">
+              <div class="container">
+                  {% if request.GET.command == 'verification' %}
+                  <div class="container m-3 mx-auto alert alert-success text-center">
+                      Thank you for registaring with us, we have sent you an email verification to your email address! <b>{{request.GET.email}}</b>
+                      <br><br>
+                      Already Verified? <a href="{% url 'login' %}" class="text-primary">Login</a>
+                    </div>
+                    
+                    {% else %}
+                    <div class="col-lg-5 col-12 mt-3  mx-auto">
+                {% include 'components/message.html' %}
+                <div class="card border-0">
+                  <div class="card-header bg-secondary text-center  p-3">
+                            <h1 class="m-0 text-white">Sign In</h1>
+                        </div>
+                        <div class="card-body rounded-bottom p-4 bg-primary">
+                            <form method="post" >
+                              {% csrf_token %}
+                                <div class="form-floating mb-3">
+    <input type="email" name="email" class="form-control" id="email" placeholder="name@example.com" pattern="[^ @]*@[^ @]*">
+    <label for="email">Email address</label>
+  </div>
+  <div class="form-floating  mb-3">
+    <input type="password" name="password" class="form-control" id="floatingPassword" placeholder="Password" autocomplete="off">
+    <label for="floatingPassword">Password</label>
+  </div>
+  <div class="mb-3">
+      <label for="exampleSelect1" class="form-label mb-3"><b>Role:</b></label>
+      <select name="role" class="form-select" id="exampleSelect1">
+        <option value="parent">Parent</option>
+      </select>
+    </div>
+                                
+                                <div class="d-grid gap-2">
+                                  <button class="btn btn-lg btn-dark" type="submit">Login</button>
+                                </div>
+                                <a class="text-white" href="{% url 'password_reset' %}">Reset password</a>
+                              </form>
+                              <br>
+                              <p class="text-center">Don’t have an account? <br><a class=" text-white" href="{% url 'signup' %}">Create One</a></p>
+                              
+                            </p>
+                            
+                          </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              {% endif %}
+            </div>
+            
+          </section>
+        </main>
+      </div>
+
+       <!-- JavaScript: force preloader for 3 seconds -->
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    setTimeout(function () {
+      const preloader = document.getElementById("preloader");
+      if (preloader) {
+        preloader.remove(); // Removes the preloader after 3s
+      }
+    }, 2000); // 2000 milliseconds = 2 seconds
+  });
+</script>
+<script src="{% static 'js/bootstrap.js' %}"></script>
+<script src="{% static 'js/bootstrap.min.js' %}"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js" integrity="sha384-cuYeSxntonz0PPNlHhBs68uyIAVpIIOZZ5JqeqvYYIcEL727kskC66kF92t6Xl2V" crossorigin="anonymous"></script>
+  </body>
+</html>

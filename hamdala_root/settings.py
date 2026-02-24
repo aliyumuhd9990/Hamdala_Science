@@ -42,7 +42,12 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     
     #my apps
-    'core_app',
+    'core_app.apps.CoreAppConfig',
+    'accounts.apps.AccountsConfig',
+    
+    #third party apps
+    'widget_tweaks',
+    
 ]
 
 MIDDLEWARE = [
@@ -147,7 +152,12 @@ MESSAGE_TAGS = {
     messages.ERROR: 'alert-danger',
 }
 
-# AUTH_USER_MODEL = 'accounts.CustomUser'
+AUTH_USER_MODEL = 'accounts.CustomUser'
+
+#payment method
+# PAYSTACK_PUBLIC_KEY = 'pk_test_cda4709f39ba3850d8e4384a2c6f7c6875b2a1d2'
+# PAYSTACK_SECRET_KEY = 'sk_test_f9a27757b6df7b558e57f4fe2cae83219dd0a070'
+
 
 
 #Email

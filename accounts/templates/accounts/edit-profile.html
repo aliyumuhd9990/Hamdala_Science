@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+  {% load static %}
+  <head>
+    <meta charset="utf-8" />
+    <title>{% block title %} Edit-Profile {% endblock title %}</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <meta content="Free HTML Templates" name="keywords" />
+    <meta content="Free HTML Templates" name="description" />
+<link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
+        <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+  </head>
+ <body>
+      <!-- Preloader -->
+<div id="preloader" class="position-fixed top-0 start-0 w-100 h-100 bg-white d-flex justify-content-center align-items-center" style="z-index: 1050;">
+  <div class="spinner-border text-primary" role="status">
+    <span class="visually-hidden">Loading...</span>
+  </div>
+</div>
+<section class="sign-in-form ">
+            <div class="container ">
+              
+              <div class="col-lg-5 col-12 mt-5  mx-auto">
+                {% include 'components/message.html' %}
+                <div class="card border-0">
+                  <div class="card-header bg-secondary text-center p-4">
+                            <h1 class="m-0 text-white">Edit Now</h1>
+                        </div>
+      <div class="card-body rounded-bottom p-3 bg-primary" >
+                            <form method="post" enctype="multipart/form-data">
+                              {% csrf_token %}
+                              <div class="form-group mb-3">
+                              <label for="fname" class="form-label"><b>First Name:</b> </label>
+        <input
+          class="form-control border-0 p-2 "
+          name="fname"
+          type="text"
+          id="fname"
+          value="{{user.first_name}}"
+          />
+        </div>
+                              <div class="form-group mb-3">
+                              <label for="fname" class="form-label"><b>Last Name:</b> </label>
+        <input
+          class="form-control border-0 p-2 "
+          name="lname"
+          type="text"
+          id="lname"
+          value="{{user.last_name}}"
+          />
+        </div>
+          
+          <div class="form-group mb-3">
+        <label for="email" class="form-label"><b>Email Address:</b> </label>
+        <input
+          class="form-control border-0 p-2 "
+          name="email"
+          type="email"
+          id="email"
+          value="{{user.email}}"
+          disabled
+        />
+          </div>
+        
+        <div class="form-group mb-3">
+        <label for="contact" class="form-label"><b>Phone Number:</b> </label>
+        <input
+          class="form-control border-0 p-2"
+          name="contact"
+          type="text"
+          id="contact"
+          value="{{profile.contact}}"
+          placeholder="Contact"
+        />
+        </div>
+        
+       
+        <div class="form-group mb-3">
+        <label for="file" class="form-label"><b>Profile Picture:</b> </label>
+        <input
+          class="form-control border-0 p-2"
+          name="file"
+          id="file"
+          type="file"
+          required
+        /></div><br>
+        
+                              <div class="d-grid gap-2">
+                                  <button class="btn btn-lg btn-dark" type="submit">Update Profile</button>
+                                
+                                    <a class="text-white" href="{% url 'password_change' %}">Change your password</a>
+                                  </div><br>
+                            </form>
+      </div>
+      <br />
+      <br />
+    </div>
+              </div></div></section>
+               <!-- JavaScript: force preloader for 3 seconds -->
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    setTimeout(function () {
+      const preloader = document.getElementById("preloader");
+      if (preloader) {
+        preloader.remove(); // Removes the preloader after 3s
+      }
+    }, 2000); // 2000 milliseconds = 2 seconds
+  });
+</script>
+    <script src="{% static 'js/bootstrap.js' %}"></script>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js" integrity="sha384-cuYeSxntonz0PPNlHhBs68uyIAVpIIOZZ5JqeqvYYIcEL727kskC66kF92t6Xl2V" crossorigin="anonymous"></script>
+  </body>
+</html>
