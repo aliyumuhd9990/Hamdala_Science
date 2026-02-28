@@ -25,19 +25,11 @@
     <main>
           <section class="sign-in-form pt-5">
               <div class="container">
-                  {% if request.GET.command == 'verification' %}
-                  <div class="container m-3 mx-auto alert alert-success text-center">
-                      Thank you for registaring with us, we have sent you an email verification to your email address! <b>{{request.GET.email}}</b>
-                      <br><br>
-                      Already Verified? <a href="{% url 'login' %}" class="text-primary">Login</a>
-                    </div>
-                    
-                    {% else %}
                     <div class="col-lg-5 col-12 mt-3  mx-auto">
                 {% include 'components/message.html' %}
                 <div class="card border-0">
                   <div class="card-header bg-secondary text-center  p-3">
-                            <h1 class="m-0 text-white">Sign In</h1>
+                            <h1 class="m-0 text-white">Staff Login</h1>
                         </div>
                         <div class="card-body rounded-bottom p-4 bg-primary">
                             <form method="post" >
@@ -50,13 +42,6 @@
     <input type="password" name="password" class="form-control" id="floatingPassword" placeholder="Password" autocomplete="off">
     <label for="floatingPassword">Password</label>
   </div>
-  <div class="mb-3">
-      <label for="exampleSelect1" class="form-label mb-3"><b>Role:</b></label>
-      <select name="role" class="form-select" id="exampleSelect1">
-        <option value="parent">Parent</option>
-        <option value="s_principal">Principal</option>
-      </select>
-    </div>
                                 
                                 <div class="d-grid gap-2">
                                   <button class="btn btn-lg btn-dark" type="submit">Login</button>
@@ -64,16 +49,12 @@
                                 <a class="text-white" href="{% url 'password_reset' %}">Reset password</a>
                               </form>
                               <br>
-                              <p class="text-center">Don’t have an account? <br><a class=" text-white" href="{% url 'signup' %}">Create One</a></p>
-                              
-                            </p>
-                            
+                             
                           </div>
                     </div>
                   </div>
                 </div>
               </div>
-              {% endif %}
             </div>
             
           </section>

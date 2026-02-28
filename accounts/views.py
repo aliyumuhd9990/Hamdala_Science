@@ -99,14 +99,43 @@ def LoginView(request):
             if user.role != role:
                 messages.error(request, "You are not allowed to log in as this role.")
                 return redirect('login')
-
-            auth.login(request, user)
-            return redirect(reverse('core_app:index'))
+            if user.role == "parent":
+                auth.login(request, user)
+                return redirect(reverse('core_app:index'))
         else:
             messages.error(request, 'Invalid Credentials!!')
             return redirect('login')
     else:
         return render(request, 'accounts/sign-in.html')
+def StaffLoginView(request):
+    if request.method == "POST":
+        email = request.POST['email']
+        password = request.POST['password']
+        # selected role from form
+
+        user = authenticate(request, email=email, password=password)
+
+        if user is not None:
+            # 🔹 Check role condition
+            if user.role == "parent":
+                messages.error(request, "You are not allowed to log in as this role.")
+                return redirect('staff_login')
+            if user.role == "s_principal":
+                auth.login(request, user)
+                return redirect(reverse('principal_app:principal_home'))
+            elif user.role == "p_principal":
+                pass
+            elif user.role == "accountant":
+                pass
+            elif user.role == "manager":
+                pass
+            elif user.role == "teacher":
+                pass
+        else:
+            messages.error(request, 'Invalid Credentials!!')
+            return redirect('staff_login')
+    else:
+        return render(request, 'accounts/staff-login.html')
 
 @login_required
 def AccountView(request):
@@ -164,5 +193,18 @@ def VerifyView(request):
 
 @login_required
 def logoutView(request):
+    user = request.user
+    if user is not None:
+            if user.role == "s_principal":
+                auth.logout(request)
+                return redirect('staff_login')
+            elif user.role == "p_principal":
+                pass
+            elif user.role == "accountant":
+                pass
+            elif user.role == "manager":
+                pass
+            elif user.role == "teacher":
+                pass
     auth.logout(request)
     return redirect(reverse('login'))

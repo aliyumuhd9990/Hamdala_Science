@@ -44,6 +44,8 @@ INSTALLED_APPS = [
     #my apps
     'core_app.apps.CoreAppConfig',
     'accounts.apps.AccountsConfig',
+    'principal_app.apps.PrincipalAppConfig',
+    'student_app.apps.StudentAppConfig',
     
     #third party apps
     'widget_tweaks',

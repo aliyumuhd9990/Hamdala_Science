@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+    {% load static %}
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Principal Dashboard</title>
+
+<!-- Bootstrap CSS -->
+<link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
+<link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+<link rel="stylesheet" href="{% static 'css/bootstrap-icons.css' %}">
+<link rel="stylesheet" href="{% static 'css/bootstrap-icons.min.css' %}">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+body {
+    background-color: #f4f6f9;
+    overflow-x: hidden;
+}
+
+/* Sidebar */
+.sidebar {
+    width: 250px;
+    height: 100vh;
+    position: fixed;
+    background: linear-gradient(180deg, #4e73df, #224abe);
+    color: white;
+    padding-top: 20px;
+    transition: 0.3s;
+}
+
+.sidebar a {
+    color: white;
+    padding: 12px 20px;
+    display: block;
+    text-decoration: none;
+}
+
+.sidebar a:hover {
+    background-color: rgba(255,255,255,0.1);
+}
+
+.sidebar.collapsed {
+    margin-left: -250px;
+}
+
+/* Main Content */
+.main-content {
+    margin-left: 250px;
+    transition: 0.3s;
+}
+
+.main-content.full {
+    margin-left: 0;
+}
+
+/* Navbar */
+.topbar {
+    background: white;
+    padding: 10px 20px;
+    border-bottom: 1px solid #ddd;
+}
+
+/* Cards */
+.stat-card {
+    border-left: 5px solid;
+}
+
+.border-primary { border-color: #4e73df !important; }
+.border-success { border-color: #1cc88a !important; }
+.border-info { border-color: #36b9cc !important; }
+.border-warning { border-color: #f6c23e !important; }
+
+.card {
+    border-radius: 10px;
+}
+
+</style>
+</head>
+<body>
+
+<!-- Sidebar -->
+<div class="sidebar" id="sidebar">
+    <h4 class="text-center mb-4">PRINCIPAL DASH</h4>
+    <a href="#">Dashboard</a>
+    <a href="#">Components</a>
+    <a href="#">Utilities</a>
+    <a href="#">Pages</a>
+    <a href="#">Charts</a>
+    <a href="#">Tables</a>
+</div>
+
+<!-- Main Content -->
+<div class="main-content" id="mainContent">
+
+    <!-- Topbar -->
+    <div class="topbar d-flex justify-content-between align-items-center fixed-top mb-5">
+        <button class="btn btn-primary" id="toggleBtn">☰</button>
+        
+        <input type="text" class="form-control w-50" placeholder="Search for...">
+        
+        <div>
+            <a href="#" class="btn btn-sm btn-danger">Logout</a>
+        </div>
+    </div>
+
+    <div class="container-fluid mt-4">
+
+        <h3 class="mb-4">Dashboard</h3>
+
+        <!-- Stats Cards -->
+        <div class="row g-4">
+            <div class="col-md-3">
+                <div class="card stat-card border-primary shadow-sm p-3">
+                    <h6 class="text-primary">EARNINGS (MONTHLY)</h6>
+                    <h4>$40,000</h4>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="card stat-card border-success shadow-sm p-3">
+                    <h6 class="text-success">EARNINGS (ANNUAL)</h6>
+                    <h4>$215,000</h4>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="card stat-card border-info shadow-sm p-3">
+                    <h6 class="text-info">TASKS</h6>
+                    <h4>50%</h4>
+                    <div class="progress">
+                        <div class="progress-bar bg-info" style="width:50%"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="card stat-card border-warning shadow-sm p-3">
+                    <h6 class="text-warning">PENDING REQUESTS</h6>
+                    <h4>18</h4>
+                </div>
+            </div>
+        </div>
+
+        <div class="card mt-4 shadow">
+    <div class="card-header bg-primary text-white">
+        Student Lists
+    </div>
+    <div class="card-body p-0">
+        <table class="table table-striped mb-0">
+            <thead>
+                <tr>
+                    <th>Class</th>
+                    <th>Take</th>
+                    <th>View</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for c in classes %}
+                <tr>
+                    <td>{{ c }}</td>
+                    <td><button class="btn btn-sm btn-primary"><i class="bi bi-plus"></i></button></td>
+                    <td><button class="btn btn-sm btn-danger"><i class="bi bi-eye"></i></button></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+        <!-- Charts -->
+        <!--
+        <div class="row mt-4 g-4">
+            <div class="col-md-8">
+                <div class="card shadow-sm p-3">
+                    <h5>Earnings Overview</h5>
+                    <canvas id="lineChart"></canvas>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card shadow-sm p-3">
+                    <h5>Revenue Sources</h5>
+                    <canvas id="donutChart"></canvas>
+                </div>
+            </div>
+        </div>
+        -->
+    </div>
+</div>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+// Sidebar toggle
+document.getElementById("toggleBtn").addEventListener("click", function() {
+    document.getElementById("sidebar").classList.toggle("collapsed");
+    document.getElementById("mainContent").classList.toggle("full");
+});
+
+// Line Chart
+/*
+new Chart(document.getElementById('lineChart'), {
+    type: 'line',
+    data: {
+        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
+        datasets: [{
+            label: 'Earnings',
+            data: [0, 10000, 5000, 15000, 10000, 20000, 25000],
+            borderColor: '#4e73df',
+            backgroundColor: 'rgba(78,115,223,0.1)',
+            fill: true,
+            tension: 0.4
+        }]
+    }
+});
+
+// Donut Chart
+new Chart(document.getElementById('donutChart'), {
+    type: 'doughnut',
+    data: {
+        labels: ['Direct', 'Social', 'Referral'],
+        datasets: [{
+            data: [55, 30, 15],
+            backgroundColor: ['#4e73df', '#1cc88a', '#36b9cc']
+        }]
+    }
+});*/
+</script>
+
+</body>
+</html>
