@@ -1,41 +1,45 @@
 from django.db import models
-from accounts.models import CustomUser
+from parent_app.models import Parent
 
-# Create your models here.
-STUDENT_CLASS = (
-    ('nus1', 'Nursery 1'),
-    ('nus2', 'Nursery 2'),
-    ('prm1', 'Primary 1'),
-    ('prm2', 'Primary 2'),
-    ('prm3', 'Primary 3'),
-    ('prm4', 'Primary 4'),
-    ('prm5', 'Primary 5'),
-    ('jss1', 'JSS 1'),
-    ('jss2', 'JSS 2'),
-    ('jss3', 'JSS 3'),
-    ('sss1', 'SSS 1'),
-    ('sss2', 'SSS 2'),
-    ('sss3', 'SSS 3'),   
+LEVEL_CHOICES = (
+    ('nursery_1', 'Nursery 1'),
+    ('nursery_2', 'Nursery 2'),
+    ('primary_1', 'Primary 1'),
+    ('primary_2', 'Primary 2'),
+    ('primary_3', 'Primary 3'),
+    ('primary_4', 'Primary 4'),
+    ('primary_5', 'Primary 5'),
+    ('jss_1', 'JSS 1'),
+    ('jss_2', 'JSS 2'),
+    ('jss_3', 'JSS 3'),
+    ('sss_1', 'SSS 1'),
+    ('sss_2', 'SSS 2'),
+    ('sss_3', 'SSS 3'),
 )
 
-SECTION = (
-    ('prm_sec', 'Primary Section'),
-    ('sec_sec', 'Secondary Section'),
-)
+ARM_CHOICES = (('A','A'),('B','B'),('C','C'))
 
-CLASS_GRADE = (
-    ('A', 'A'),
-    ('B', 'B'),
-    ('C', 'C'),
-)
+class AcademicSession(models.Model):
+    name = models.CharField(max_length=20)
+    is_current = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.name
+
 class Student(models.Model):
-    stu_parent = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='student_parent')
-    stu_name = models.CharField(max_length=100)
-    stu_section = models.CharField(max_length=100, choices=SECTION, default="None", null=False, blank=False)
-    stu_class = models.CharField(max_length=100, choices=STUDENT_CLASS, default="None", null=False, blank=False)
-    stu_grade = models.CharField(max_length=100, choices=CLASS_GRADE, default="A", null=False, blank=False)
-    stu_img = models.ImageField(upload_to='img_root/',  blank=True, null=False)
-    on_scholership = models.BooleanField(default=False)
+    admission_number = models.CharField(max_length=20, unique=True)
+    first_name = models.CharField(max_length=50)
+    last_name = models.CharField(max_length=50)
+    level = models.CharField(max_length=20, choices=LEVEL_CHOICES)
+    arm = models.CharField(max_length=1, choices=ARM_CHOICES)
+    session = models.ForeignKey(AcademicSession, on_delete=models.CASCADE)
+    parent = models.ForeignKey(Parent, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
     
     def __str__(self):
-        return self.stu_name
+        return self.first_name + " " + self.last_name + " (" + self.admission_number + ")"
+
+    def save(self, *args, **kwargs):
+        if not self.admission_number:
+            self.admission_number = f"STD{Student.objects.count()+1:05d}"
+        super().save(*args, **kwargs)

@@ -1,0 +1,63 @@
+{% extends 'dash_navber.html' %}
+
+{% block title %}
+add_parent
+{% endblock title %}
+    
+{% block content %}
+<main>
+          <section class="sign-in-form pt-5 pb-5">
+            <div class="container">
+              
+              <div class="col-lg-5 col-12 mt-3  mx-auto">
+                {% include 'components/message.html' %}
+                <div class="card border-0">
+                  <div class="card-header bg-secondary text-center p-4">
+                            <h1 class="m-0 text-white">Add Student</h1>
+                        </div>
+                        <div class="card-body rounded-bottom p-3 bg-primary" >
+                            <hr>
+
+<h5 class="mt-4">Add New Parent (If Not Exists)</h5>
+
+<form method="post">
+  {% csrf_token %}
+
+  <div class="row g-3">
+
+    <div class="col-md-4">
+      <label class="form-label">Username</label>
+      <input type="text" name="username"
+             class="form-control" required>
+    </div>
+
+    <div class="col-md-4">
+      <label class="form-label">Email</label>
+      <input type="email" name="email"
+             class="form-control">
+    </div>
+
+    <div class="col-md-4">
+      <label class="form-label">Phone</label>
+      <input type="text" name="phone"
+             class="form-control">
+    </div>
+
+  </div>
+
+  <button type="submit" name="create_parent"
+          class="btn btn-secondary mt-3">
+    Add Parent
+  </button>
+</form><br>
+                           
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+          </section>
+        </main>
+      </div>
+{% endblock content %}

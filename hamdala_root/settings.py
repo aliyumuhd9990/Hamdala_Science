@@ -46,6 +46,8 @@ INSTALLED_APPS = [
     'accounts.apps.AccountsConfig',
     'principal_app.apps.PrincipalAppConfig',
     'student_app.apps.StudentAppConfig',
+    'parent_app.apps.ParentAppConfig',
+    'payment.apps.PaymentConfig',
     
     #third party apps
     'widget_tweaks',

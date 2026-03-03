@@ -1,0 +1,70 @@
+{% extends 'dash_navber.html' %}
+{% block title %}Search Parent{% endblock %}
+
+{% block content %}
+<div class="card shadow container pt-3" style="margin-top: 10em;">
+        <h5 class="text-primary fw-bolder">Search Parent / Guardian</h5>
+
+    <div class="card-body">
+        <form method="POST" class="d-flex" role="search">
+            {% csrf_token %}
+                <input class="form-control me-2" 
+                       aria-label="Search"
+                       type="text"
+                       name="query"
+                       placeholder="Enter parent email or phone"
+                       value="{{ query }}"
+                       required>
+                <button class="btn btn-outline-primary">
+                    Search
+                </button>
+        </form>
+    </div>
+    
+<div class="table-responsive">
+        {% if parents %}
+            <table class="table table-bordered ">
+                <thead>
+                    <tr>
+                        <th>Parent Name</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for parent in parents %}
+                    <tr>
+                        <td>{{ parent.user.first_name }} {{ parent.user.last_name }}</td>
+                        <td>{{ parent.user.email }}</td>
+                        <td>{{ parent.phone }}</td>
+                        <td>
+                            <a href="{% url 'principal_app:add_student' parent.id %}"
+                               class="btn btn-success btn-sm">
+                                Select
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% endif %}
+        </div>
+        
+        {% if parents is not None and not parents %}
+        <div class="alert alert-warning mt-3">
+            Parent not found.
+            <a href="{% url 'parent_app:add_parent' %}" class="btn btn-sm btn-danger ms-2">
+                Add Parent
+            </a>
+        </div>
+        {% else %}
+        <div class="alert alert-info mt-3">
+            Add New Parent.
+            <a href="{% url 'parent_app:add_parent' %}" class="btn btn-sm btn-info ms-2">
+                Add Parent
+            </a>
+        </div>
+        {% endif %}
+</div>
+{% endblock %}

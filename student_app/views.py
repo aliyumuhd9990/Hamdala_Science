@@ -1,31 +1,71 @@
-from django.shortcuts import render, redirect
-from .models import *
-from django.contrib import messages
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth.decorators import login_required
+from student_app.models import Student, AcademicSession
+from payment.models import Payment   # adjust if your app name differs
+from django.db.models import Sum
 
-app_name = "student_app"
-# Create your views here.
-def AddStudent(request):
-    if request.method == "POST":
-        parent_email = request.POST['email']
-        stu_name = request.POST['stu_name']
-        stu_section = request.POST['stu_section']
-        stu_class = request.POST['stu_class']
-        stu_grade = request.POST['stu_grade']
 
-        student, created = Student.objects.get_or_create(
-                stu_parent=parent_email,
-                stu_name=stu_name,
-                stu_section=stu_section,
-                stu_class=stu_class, 
-                stu_grade=stu_grade, 
-            )
-        student.save()
-        messages.SUCCESS(request, 'Student Added Successful!')
-        return redirect('student_app:add_student')
-    return render(request, 'student/add_student.html')
+PRIMARY_LEVELS = [
+    'nursery_1','nursery_2',
+    'primary_1','primary_2','primary_3','primary_4','primary_5'
+]
 
-def StudentList(request):
-    return render(request, 'student/student_list.html')
-def StudentDetails(request):
-    return render(request, 'student/student_details.html')
+SECONDARY_LEVELS = [
+    'jss_1','jss_2','jss_3',
+    'sss_1','sss_2','sss_3'
+]
 
+def student_list(request):
+    level = request.GET.get('level')   # js1, ss1 etc
+    arm = request.GET.get('arm')       # A, B, C
+    session_id = request.GET.get('session')
+
+    sessions = AcademicSession.objects.all().order_by('-name')
+
+    if session_id:
+        session = AcademicSession.objects.get(id=session_id)
+    else:
+        session = AcademicSession.objects.filter(is_current=True).first()
+
+    # ✅ STRICT FILTERING
+    students = Student.objects.filter(
+        session=session,
+        level=level,
+        arm=arm
+    )
+
+    context = {
+        'students': students,
+        'sessions': sessions,
+        'selected_session': session,
+        'level': level,
+        'arm': arm,
+    }
+    return render(request, 'student/students_list.html', context)
+
+def student_detail(request, student_id):
+    student = get_object_or_404(Student, id=student_id)
+
+    payments = Payment.objects.filter(
+        student=student,
+        session=student.session
+    )
+
+    total_paid = payments.aggregate(
+        total=Sum('amount')
+    )['total'] or 0
+
+    # TEMPORARY SCHOOL FEE
+    school_fee = 50000  
+
+    balance = school_fee - total_paid
+
+    context = {
+        'student': student,
+        'payments': payments,
+        'total_paid': total_paid,
+        'school_fee': school_fee,
+        'balance': balance,
+    }
+
+    return render(request, 'student/student_details.html', context)

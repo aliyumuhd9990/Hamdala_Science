@@ -35,15 +35,15 @@
                       <img src="{{profile.profile_img.url}}" class="img-fluid rounded-circle mx-auto mb-3" style="width: 100px; height: 90px;">
                       
                       {% else %}
-                      <img class="img-profile rounded-circle"
-                        src="{% static 'img/undraw_profile.svg' %}">
+                      <img class="img-profile rounded-circle text-center mx-auto mb-3"
+                        src="{% static 'img/undraw_profile.svg' %}" style="width: 100px; height: 90px;">
                       {% endif %}
-                      <h3 class="text-primary mb-3">{{user.first_name}} {{user.last_name}}</h3>
+                      <h3 class="text-white mb-3">{{user.first_name}} {{user.last_name}}</h3>
                     </div>
                   </div>
     
                   <div
-      class="container-sm mt-5 p-3 bg-body col-lg-4 px-3 shadow-sm rounded-2"
+      class="container-sm mt-lg-5 mt-0 p-3 bg-body col-lg-4 px-3 shadow-sm rounded-2"
     >
       <h6 class="text-dark my-3 fw-bolder">Profile Info</h6>
       <ul class="list-group">
@@ -54,7 +54,7 @@
         {% if user.role == 'parent' %}
         <li class="list-group-item"><b>Role:</b> {{user.get_role_display}}</li>
         {% else %}
-        <li class="list-group-item"><b>Role:</b> {{user.get_role_display}}</li>
+        <li class="list-group-item"><b>Role:</b>🌚 {{user.get_role_display}}</li>
 
         {% endif %}
         

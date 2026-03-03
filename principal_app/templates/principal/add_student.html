@@ -1,0 +1,80 @@
+{% extends 'dash_navber.html' %}
+{% block title %}Add Student{% endblock %}
+
+{% block content %}
+<div class="card shadow">
+    <div class="card-header bg-primary text-white">
+        <h5>Add Student</h5>
+    </div>
+    <div class="card-body">
+
+        <!-- Parent Search -->
+        <form method="POST">
+            {% csrf_token %}
+
+            <div class="alert alert-success">
+                <strong>Parent:</strong>  
+                email or phone number found
+            </div>
+
+            <div class="mb-3">
+                <label>Parent Email</label>
+                <input type="email" name="parent_email" class="form-control" value="{{ parent.user.email }}" disabled>
+            </div>
+
+            <hr>
+
+            <div class="row mb-3">
+                <div class="col">
+                    <label>First Name</label>
+                    <input type="text" name="first_name" class="form-control" required>
+                </div>
+                <div class="col">
+                    <label>Last Name</label>
+                    <input type="text" name="last_name" class="form-control" required>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col">
+                    <label>Class</label>
+                    <select name="level" class="form-select" required>
+                        <option value="">-- Select Class --</option>
+
+                        <!-- Primary -->
+                        <option value="nursery_1">Nursery 1</option>
+                        <option value="nursery_2">Nursery 2</option>
+                        <option value="primary_1">Primary 1</option>
+                        <option value="primary_2">Primary 2</option>
+                        <option value="primary_3">Primary 3</option>
+                        <option value="primary_4">Primary 4</option>
+                        <option value="primary_5">Primary 5</option>
+
+                        <!-- Secondary -->
+                        <option value="jss_1">JSS 1</option>
+                        <option value="jss_2">JSS 2</option>
+                        <option value="jss_3">JSS 3</option>
+                        <option value="sss_1">SSS 1</option>
+                        <option value="sss_2">SSS 2</option>
+                        <option value="sss_3">SSS 3</option>
+                    </select>
+                </div>
+
+                <div class="col">
+                    <label>Arm</label>
+                    <select name="arm" class="form-select" required>
+                        <option value="">-- Select Arm --</option>
+                        <option value="A">A</option>
+                        <option value="B">B</option>
+                        <option value="C">C</option>
+                    </select>
+                </div>
+            </div>
+<div class="d-grid gap-2">
+  <button class="btn btn-primary" type="submit">Add Student</button>
+</div>
+        </form>
+
+    </div>
+</div>
+{% endblock %}
