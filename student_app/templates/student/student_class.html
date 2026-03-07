@@ -1,58 +1,62 @@
 {% extends 'dash_navber.html' %}
-{% block title %}Student List{% endblock %}
+{% block title %}
+    student_class
+{% endblock title %}
 
 {% block content %}
-<div class="card shadow">
-    <div class="card-header bg-dark text-white">
-        <h5>Students</h5>
+<div class="container row" style="margin-top: 5em;">
+    <h5 class="mb-3 col-6">Student Class {{ session.name }}</h5>
+    <div class="col-6 text-end">
+        <a href="{% url 'parent_app:search_parent' %}" class="btn btn-primary">
+            Add Student
+        </a>
     </div>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Class</th>
+            <th>Grade</th>
+            <th>View</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for cls in classes %}
+        <tr>
+    <td>{{ cls|upper }}</td>
 
-    <div class="card-body">
+    <td>
+        <select class="form-select form-select-sm arm-select">
+            <option value="A">A</option>
+            <option value="B">B</option>
+            <option value="C">C</option>
+        </select>
+    </td>
 
-        <!-- Session Filter -->
-        <form method="GET" class="row mb-3">
-            <div class="col-md-4">
-                <select name="session" class="form-select">
-                    <option value="">All Sessions</option>
-                    {% for s in sessions %}
-                        <option value="{{ s.id }}">{{ s.name }}</option>
-                    {% endfor %}
-                </select>
-            </div>
-            <div class="col-md-2">
-                <button class="btn btn-secondary">Filter</button>
-            </div>
-        </form>
+    <td>
+        <a href="#" class="btn btn-sm btn-primary view-btn"
+           data-level="{{ cls }}">
+            View
+        </a>
+    </td>
+</tr>
+        {% endfor %}
+    </tbody>
+</table>
 
-        <table class="table table-bordered table-striped">
-            <thead>
-                <tr>
-                    <th>Adm No</th>
-                    <th>Name</th>
-                    <th>Class</th>
-                    <th>Arm</th>
-                    <th>Session</th>
-                    <th>Parent</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for student in students %}
-                <tr>
-                    <td>{{ student.admission_number }}</td>
-                    <td>{{ student.first_name }} {{ student.last_name }}</td>
-                    <td>{{ student.get_level_display }}</td>
-                    <td>{{ student.arm }}</td>
-                    <td>{{ student.session.name }}</td>
-                    <td>{{ student.parent }}</td>
-                </tr>
-                {% empty %}
-                <tr>
-                    <td colspan="6" class="text-center">No students found</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+<script>
+document.querySelectorAll('.view-btn').forEach(btn => {
+    btn.addEventListener('click', function (e) {
+        e.preventDefault();
 
-    </div>
-</div>
-{% endblock %}
+        const level = this.dataset.level;
+        const arm = this.closest('tr')
+                        .querySelector('.arm-select')
+                        .value;
+
+        window.location.href =
+            `{% url 'student_app:student_list' %}?level=${level}&arm=${arm}`;
+    });
+});
+</script>
+  </div>
+    {% endblock content %}

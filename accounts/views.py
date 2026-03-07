@@ -35,7 +35,6 @@ def SignupView(request):
         elif CustomUser.objects.filter(email=email).exists():
             messages.error(request, 'Email Already Exist!!')
             return redirect(reverse('signup'))
-
         else:
             user = CustomUser.objects.create_user(
                 first_name=fname,
@@ -124,7 +123,8 @@ def StaffLoginView(request):
                 auth.login(request, user)
                 return redirect(reverse('principal_app:principal_home'))
             elif user.role == "p_principal":
-                pass
+                auth.login(request, user)
+                return redirect(reverse('principal_app:principal_home'))
             elif user.role == "accountant":
                 pass
             elif user.role == "manager":
@@ -199,7 +199,8 @@ def logoutView(request):
                 auth.logout(request)
                 return redirect('staff_login')
             elif user.role == "p_principal":
-                pass
+                auth.logout(request)
+                return redirect('staff_login')
             elif user.role == "accountant":
                 pass
             elif user.role == "manager":

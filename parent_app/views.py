@@ -1,9 +1,29 @@
 from django.shortcuts import render, redirect
 from accounts.models import CustomUser
-from .models import Parent
+from django.db.models import Q
 from django.contrib import messages
 
 app_name = 'parent_app'
+
+
+def search_parent(request):
+    parents = None
+    query = ''
+
+    if request.method == 'POST':
+        query = request.POST.get('query')
+
+        parents = CustomUser.objects.filter(
+            Q(email__icontains=query) |
+            Q(profile__contact__icontains=query)
+        ).filter(role='parent')
+
+        
+    return render(request, 'parent/search_parent.html', {
+        'parents': parents,
+        'query': query
+    })
+    
 
 def add_parent(request):
     if request.method == 'POST':
@@ -26,12 +46,12 @@ def add_parent(request):
                 return redirect('parent_app:add_parent', parent_id=user.id)
 
             # Parent already exists
-            if Parent.objects.filter(user=user).exists():
+            if CustomUser.objects.filter(role='parent').exists():
                 messages.info(
                     request,
                     "Parent already exists. You can now add student."
                 )
-                return redirect('principal_app:add_student', parent_id=user.id)
+                return redirect('student_app:add_student', parent_id=user.id)
 
         else:
             # 2️⃣ Create new user
@@ -43,16 +63,7 @@ def add_parent(request):
                 last_name=last_name
             )
 
-        # 3️⃣ Create parent profile if not exists
-        Parent.objects.get_or_create(
-            user=user,
-            defaults={
-                'phone': phone,
-                'address': address
-            }
-        )
-
         messages.success(request, "Parent added successfully.")
-        return redirect('principal_app:add_student', parent_id=user.id)
+        return redirect('student_app:add_student', parent_id=user.id)
 
     return render(request, 'parent/add_parent.html')

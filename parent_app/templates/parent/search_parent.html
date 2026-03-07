@@ -35,11 +35,11 @@
                 <tbody>
                     {% for parent in parents %}
                     <tr>
-                        <td>{{ parent.user.first_name }} {{ parent.user.last_name }}</td>
-                        <td>{{ parent.user.email }}</td>
-                        <td>{{ parent.phone }}</td>
+                        <td>{{ parent.first_name }} {{ parent.last_name }}</td>
+                        <td>{{ parent.email }}</td>
+                        <td>{{ parent.profile.contact }}</td>
                         <td>
-                            <a href="{% url 'principal_app:add_student' parent.id %}"
+                            <a href="{% url 'student_app:add_student' parent.id %}"
                                class="btn btn-success btn-sm">
                                 Select
                             </a>

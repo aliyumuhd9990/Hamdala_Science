@@ -37,6 +37,10 @@
                 <div class="col-md-4"><strong>Session:</strong></div>
                 <div class="col-md-8">{{ student.session.name }}</div>
             </div>
+            <div class="row mb-2">
+                <div class="col-md-4"><strong>Term:</strong></div>
+                <div class="col-md-8">{{ current_term.get_name_display }}</div>
+            </div>
 
         </div>
     </div>
@@ -51,25 +55,25 @@
             <div class="row mb-2">
                 <div class="col-md-4"><strong>Name:</strong></div>
                 <div class="col-md-8">
-                    {{ student.parent.user.first_name }} {{ student.parent.user.last_name }}
+                    {{ student.parent.first_name }} {{ student.parent.last_name }}
                 </div>
             </div>
 
             <div class="row mb-2">
                 <div class="col-md-4"><strong>Email:</strong></div>
-                <div class="col-md-8">{{ student.parent.user.email }}</div>
+                <div class="col-md-8">{{ student.parent.email }}</div>
             </div>
 
             <div class="row mb-2">
                 <div class="col-md-4"><strong>Phone:</strong></div>
-                <div class="col-md-8">{{ student.parent.phone }}</div>
+                <div class="col-md-8">{{ student.parent.profile.contact }}</div>
             </div>
 
         </div>
     </div>
 
     <!-- PAYMENT STATUS -->
-    <div class="card">
+    <div class="card mb-5">
         <div class="card-header bg-success text-white">
             Payment Status
         </div>
