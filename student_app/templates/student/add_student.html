@@ -7,7 +7,9 @@
         <h5>Add Student</h5>
     </div>
     <div class="card-body">
-        
+        <a href="javascript:history.back()" class="btn btn-secondary btn-sm mt-5 p-2 mb-2">
+        ← Back 
+    </a>
         {% if messages %}
             {% include 'components/message.html' %}
         {% else %}
@@ -46,9 +48,11 @@
 
                         <!-- Primary -->
                         
-                        {% if user.role == 'p_principal' %}    
+                        {% if user.role == 'n_principal' %}    
+                        <option value="pre_nursery">Pre Nursery</option>
                         <option value="nursery_1">Nursery 1</option>
                         <option value="nursery_2">Nursery 2</option>
+                        {% elif user.role == 'p_principal' %}    
                         <option value="primary_1">Primary 1</option>
                         <option value="primary_2">Primary 2</option>
                         <option value="primary_3">Primary 3</option>

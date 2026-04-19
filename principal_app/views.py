@@ -4,8 +4,11 @@ from student_app.models import Student, AcademicSession
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 
+NURSERY_LEVELS = [
+    'pre_nursery','nursery_1','nursery_2',
+]
+
 PRIMARY_LEVELS = [
-    'nursery_1','nursery_2',
     'primary_1','primary_2','primary_3','primary_4','primary_5'
 ]
 
@@ -33,6 +36,9 @@ def principal_home(request):
     elif user.role == 's_principal':
         students = students.filter(level__in=SECONDARY_LEVELS)
         section = "Secondary Section"
+    elif user.role == 'n_principal':
+        students = students.filter(level__in=NURSERY_LEVELS)
+        section = "Nursery Section"
 
     else:
         section = "Unauthorized"
@@ -44,7 +50,7 @@ def principal_home(request):
         'students': students[:5],  # recent 5
         'arms': ARMS,
         'arm': arm,
-        'classes': PRIMARY_LEVELS if user.role == 'p_principal' else SECONDARY_LEVELS,
+        'classes': PRIMARY_LEVELS if user.role == 'p_principal' else SECONDARY_LEVELS if user.role == 's_principal' else NURSERY_LEVELS 
     }
 
     return render(request, 'principal/principal_home.html', context)

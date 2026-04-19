@@ -6,6 +6,10 @@ from django.db.models import Sum
 from django.contrib import messages
 
 
+NURSERY_LEVELS = [
+    'pre_nursery', 'nursery_1','nursery_2',
+]
+
 PRIMARY_LEVELS = [
     'nursery_1','nursery_2',
     'primary_1','primary_2','primary_3','primary_4','primary_5'
@@ -64,7 +68,6 @@ def student_list(request):
 
     sessions = AcademicSession.objects.all().order_by('-name')
 
-    
     if session_id:
         session = AcademicSession.objects.get(id=session_id)
     else:
@@ -79,6 +82,13 @@ def student_list(request):
     if term_id:
         students = students.filter(term_id=term_id)
 
+    payments = Payment.objects.filter(student__in=students)
+
+    # Create payment status dictionary
+    payment_status = {
+        payment.student_id: payment.amount for payment in payments
+    }
+
     context = {
         'students': students,
         'sessions': sessions,
@@ -86,6 +96,7 @@ def student_list(request):
         'level': level,
         'arm': arm,
         'term_id': term_id,
+        'payment_status': payment_status
     }
 
     return render(request, 'student/students_list.html', context)
@@ -136,10 +147,14 @@ def student_class(request):
     students = Student.objects.filter(session=current_session)
     current_session = AcademicSession.objects.filter(is_current=True).first()
 
-    if user.role == 'p_principal':
+    if user.role == 'n_principal':
+        students = students.filter(level__in=NURSERY_LEVELS)
+        section = "Nursery Section"
+
+    elif user.role == 'p_principal':
         students = students.filter(level__in=PRIMARY_LEVELS)
         section = "Primary Section"
-
+        
     elif user.role == 's_principal':
         students = students.filter(level__in=SECONDARY_LEVELS)
         section = "Secondary Section"
@@ -154,6 +169,8 @@ def student_class(request):
         'students': students[:5],  # recent 5
         'arms': ARMS,
         'arm': arm,
-        'classes': PRIMARY_LEVELS if user.role == 'p_principal' else SECONDARY_LEVELS,
+        'classes': NURSERY_LEVELS if user.role == 'n_principal' 
+        else PRIMARY_LEVELS if user.role == 'p_principal'
+        else SECONDARY_LEVELS
     }
     return render(request, 'student/student_class.html', context)

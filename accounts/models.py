@@ -21,6 +21,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin, TimeStampedModel):
         ('manager', 'manager'),
         ('s_principal', 'secondary principal'),
         ('p_principal', 'primary principal'),
+        ('n_principal', 'nursery principal'),
         ('accountant', 'accountant'),
     )
 

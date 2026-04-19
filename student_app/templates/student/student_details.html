@@ -2,10 +2,10 @@
 {% block title %}Student Details{% endblock %}
 
 {% block content %}
-<div class="container mt-4">
+<div class="container mt-5">
 
-    <a href="javascript:history.back()" class="btn btn-secondary btn-sm mb-3">
-        ← Back
+    <a href="javascript:history.back()" class="btn btn-secondary btn-sm mt-5 p-2 mb-2">
+        ← Back 
     </a>
 
     <div class="card mb-4">
@@ -21,14 +21,14 @@
 
             <div class="row mb-2">
                 <div class="col-md-4"><strong>Name:</strong></div>
-                <div class="col-md-8">
+                <div class="col-md-8 text-capitalize">
                     {{ student.first_name }} {{ student.last_name }}
                 </div>
             </div>
 
             <div class="row mb-2">
                 <div class="col-md-4"><strong>Class:</strong></div>
-                <div class="col-md-8">
+                <div class="col-md-8 text-capitalize">
                     {{ student.get_level_display }} {{ student.arm }}
                 </div>
             </div>
@@ -39,7 +39,7 @@
             </div>
             <div class="row mb-2">
                 <div class="col-md-4"><strong>Term:</strong></div>
-                <div class="col-md-8">{{ current_term.get_name_display }}</div>
+                <div class="col-md-8 text-capitalize">{{ current_term.get_name_display }}</div>
             </div>
 
         </div>
@@ -54,14 +54,14 @@
 
             <div class="row mb-2">
                 <div class="col-md-4"><strong>Name:</strong></div>
-                <div class="col-md-8">
+                <div class="col-md-8 text-capitalize">
                     {{ student.parent.first_name }} {{ student.parent.last_name }}
                 </div>
             </div>
 
             <div class="row mb-2">
                 <div class="col-md-4"><strong>Email:</strong></div>
-                <div class="col-md-8">{{ student.parent.email }}</div>
+                <div class="col-md-8 text-lowercase">{{ student.parent.email }}</div>
             </div>
 
             <div class="row mb-2">

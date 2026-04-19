@@ -125,6 +125,9 @@ def StaffLoginView(request):
             elif user.role == "p_principal":
                 auth.login(request, user)
                 return redirect(reverse('principal_app:principal_home'))
+            elif user.role == "n_principal":
+                auth.login(request, user)
+                return redirect(reverse('principal_app:principal_home'))
             elif user.role == "accountant":
                 pass
             elif user.role == "manager":
